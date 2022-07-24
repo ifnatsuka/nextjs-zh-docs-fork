@@ -1,7 +1,3 @@
----
-description: Add rewrites to your Next.js app.
----
-
 # Rewrites
 
 <details open>
@@ -15,7 +11,7 @@ description: Add rewrites to your Next.js app.
   <summary><b>Version History</b></summary>
 
 | Version   | Changes         |
-| --------- | --------------- |
+|-----------|-----------------|
 | `v10.2.0` | `has` added.    |
 | `v9.5.0`  | Rewrites added. |
 
