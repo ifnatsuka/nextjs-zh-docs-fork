@@ -213,15 +213,15 @@ module.exports = {
 }
 ```
 
-## Header, Cookie, and Query Matching
+## 标头、Cookie 与查询匹配
 
-To only match a rewrite when header, cookie, or query values also match the `has` field can be used. Both the `source` and all `has` items must match for the rewrite to be applied.
+要想只在标头、cookie 或查询匹配的情况下进行重写，可以使用 `has` 字段。`source   ` 和所有 `has` 条目都匹配时，才能应用重写。
 
-`has` items have the following fields:
+`has` 条目有以下字段：
 
-- `type`: `String` - must be either `header`, `cookie`, `host`, or `query`.
-- `key`: `String` - the key from the selected type to match against.
-- `value`: `String` or `undefined` - the value to check for, if undefined any value will match. A regex like string can be used to capture a specific part of the value, e.g. if the value `first-(?<paramName>.*)` is used for `first-second` then `second` will be usable in the destination with `:paramName`.
+- `type`：`String` - 必须是 `header`、`cookie`、`host` 或 `query`
+- `key`：`String` - 所选类型中的键要与之匹配
+- `value`：`String` 或 `undefined` - 要检查的值，如果未定义，任何值都可以匹配。类似于 regex 的字符串可以用来捕获值的特定部分，例如，如果值 `first-(?<paramName>.*)` 被用于 匹配 `first-second`，那么 `second` 将在目标处作为 `:paramName` 使用。
 
 ```js
 module.exports = {
@@ -290,17 +290,17 @@ module.exports = {
 }
 ```
 
-## Rewriting to an external URL
+## 重写到外部 URL
 
 <details>
-  <summary><b>Examples</b></summary>
+  <summary><b>示例</b></summary>
   <ul>
     <li><a href="https://github.com/vercel/next.js/tree/canary/examples/custom-routes-proxying">Incremental adoption of Next.js</a></li>
     <li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-zones">Using Multiple Zones</a></li>
   </ul>
 </details>
 
-Rewrites allow you to rewrite to an external url. This is especially useful for incrementally adopting Next.js. The following is an example rewrite for redirecting the `/blog` route of your main app to an external site.
+重写功能允许你重写到一个外部的 URL。这对于逐步采用 Next.js 的进程特别有用。下面是一个重写的例子，将主程序的 `/blog` 路由重定向到一个外部网站。
 
 ```js
 module.exports = {
@@ -319,7 +319,7 @@ module.exports = {
 }
 ```
 
-If you're using `trailingSlash: true`, you also need to insert a trailing slash in the `source` parameter. If the destination server is also expecting a trailing slash it should be included in the `destination` parameter as well.
+如果你使用 `trailingSlash: true`，你也需要在 `source` 参数中插入一个尾部斜线。如果目标服务器也希望有一个尾部斜杠，那么也应该在 `destination` 参数中加入。
 
 ```js
 module.exports = {
@@ -339,11 +339,11 @@ module.exports = {
 }
 ```
 
-### Incremental adoption of Next.js
+### 逐渐采用 Next.js
 
-You can also have Next.js fall back to proxying to an existing website after checking all Next.js routes.
+你也可以让 Next.js 在检查完所有 Next.js 路由后，退回并代理现有网站。
 
-This way you don't have to change the rewrites configuration when migrating more pages to Next.js
+这样，在向 Next.js 迁移更多页面时，你就不必改变重写配置了。
 
 ```js
 module.exports = {
@@ -360,11 +360,11 @@ module.exports = {
 }
 ```
 
-See additional information on incremental adoption [in the docs here](/docs/migrating/incremental-adoption).
+请参阅关于[逐渐采用 Next.js 的其他信息](/docs/migrating/incremental-adoption)。
 
-### Rewrites with basePath support
+### 重写与根路径支持
 
-When leveraging [`basePath` support](/docs/api-reference/next-config-js/basepath) with rewrites each `source` and `destination` is automatically prefixed with the `basePath` unless you add `basePath: false` to the rewrite:
+当重写与 [`basePath` 根路径](/docs/api-reference/next-config-js/basepath) 一起使用时，每个 `source` 和 `destination` 都会自动加上 `basePath` 的前缀，除非你在重写中加入 `basePath: false`：
 
 ```js
 module.exports = {
@@ -388,9 +388,9 @@ module.exports = {
 }
 ```
 
-### Rewrites with i18n support
+### 重写与 i18n 支持
 
-When leveraging [`i18n` support](/docs/advanced-features/i18n-routing) with rewrites each `source` and `destination` is automatically prefixed to handle the configured `locales` unless you add `locale: false` to the rewrite. If `locale: false` is used you must prefix the `source` and `destination` with a locale for it to be matched correctly.
+当重写与 [`i18n` 路由](/docs/advanced-features/i18n-routing) 一起使用时，每个 `source` 和 `destination` 都会自动添加前缀，以处理配置的 `locales`，除非你在重写时添加 `locale: false`。如果使用 `locale: false`，你必须在 `source` 和 `destination` 前加上一个 locale，才能正确匹配。
 
 ```js
 module.exports = {
