@@ -9,6 +9,7 @@ description: Try the latest Image Optimization with the experimental `next/futur
 
 | Version   | Changes                                      |
 | --------- | -------------------------------------------- |
+| `v12.2.4` | Support for `fill` property added. |
 | `v12.2.0` | Experimental `next/future/image` introduced. |
 
 </details>
@@ -21,13 +22,15 @@ To use `next/future/image`, add the following to your `next.config.js` file:
 
 ```js
 module.exports = {
-  experimental: {
-    images: {
-      allowFutureImage: true,
-    },
-  },
+   experimental: {
+      images: {
+         allowFutureImage: true,
+      },
+   },
 }
 ```
+
+## Comparison
 
 Compared to `next/image`, the new `next/future/image` component has the following changes:
 
@@ -36,15 +39,127 @@ Compared to `next/image`, the new `next/future/image` component has the followin
 - Removes `layout`, `objectFit`, and `objectPosition` props in favor of `style` or `className`
 - Removes `IntersectionObserver` implementation in favor of [native lazy loading](https://caniuse.com/loading-lazy-attr)
 - Removes `loader` config in favor of [`loader`](#loader) prop
-- Note: there is no `fill` mode so `width` & `height` props are required
 - Note: the [`onError`](#onerror) prop might behave differently
 
-The default layout for `next/image` was `intrinsic`, which would shrink the `width` if the image was larger than it's container. Since no styles are automatically applied to `next/future/image`, you'll need to add the following CSS to achieve the same behavior:
+## Migration
 
-```css
-max-width: 100%;
-height: auto;
+Although `layout` is not available, you can migrate `next/image` to `next/future/image` using a few props. The following is a comparison of the two components:
+
+<table>
+<thead>
+  <tr>
+    <th>next/image</th>
+    <th>next/future/image</th>
+  </tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+```jsx
+import Image from 'next/image'
+import img from '../img.png'
+function Page() {
+  return <Image src={img} />
+}
 ```
+
+</td>
+<td>
+
+```jsx
+import Image from 'next/future/image'
+import img from '../img.png'
+const css = { maxWidth: '100%', height: 'auto' }
+function Page() {
+  return <Image src={img} style={css} />
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```jsx
+import Image from 'next/image'
+import img from '../img.png'
+function Page() {
+  return <Image src={img} layout="responsive" />
+}
+```
+
+</td>
+<td>
+
+```jsx
+import Image from 'next/future/image'
+import img from '../img.png'
+const css = { width: '100%', height: 'auto' }
+function Page() {
+  return <Image src={img} sizes="100vw" style={css} />
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```jsx
+import Image from 'next/image'
+import img from '../img.png'
+function Page() {
+  return <Image src={img} layout="fill" />
+}
+```
+
+</td>
+<td>
+
+```jsx
+import Image from 'next/future/image'
+import img from '../img.png'
+function Page() {
+  return <Image src={img} sizes="100vw" fill />
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```jsx
+import Image from 'next/image'
+import img from '../img.png'
+function Page() {
+  return <Image src={img} layout="fixed" />
+}
+```
+
+</td>
+<td>
+
+```jsx
+import Image from 'next/future/image'
+import img from '../img.png'
+function Page() {
+  return <Image src={img} />
+}
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+You can also use `className` instead of `style`.
 
 ## Required Props
 
@@ -64,13 +179,13 @@ When using an external URL, you must add it to [domains](#domains) in `next.conf
 
 The `width` property represents the _rendered_ width in pixels, so it will affect how large the image appears.
 
-Required, except for [statically imported images](/docs/basic-features/image-optimization#local-images).
+Required, except for [statically imported images](/docs/basic-features/image-optimization.md#local-images) or images with the [`fill` property](#fill).
 
 ### height
 
 The `height` property represents the _rendered_ height in pixels, so it will affect how large the image appears.
 
-Required, except for [statically imported images](/docs/basic-features/image-optimization#local-images).
+Required, except for [statically imported images](/docs/basic-features/image-optimization.md#local-images) or images with the [`fill` property](#fill).
 
 ## Optional Props
 
@@ -92,21 +207,39 @@ Here is an example of using a custom loader:
 import Image from 'next/future/image'
 
 const myLoader = ({ src, width, quality }) => {
-  return `https://example.com/${src}?w=${width}&q=${quality || 75}`
+   return `https://example.com/${src}?w=${width}&q=${quality || 75}`
 }
 
 const MyImage = (props) => {
-  return (
-    <Image
-      loader={myLoader}
-      src="me.png"
-      alt="Picture of the author"
-      width={500}
-      height={500}
-    />
-  )
+   return (
+           <Image
+                   loader={myLoader}
+                   src="me.png"
+                   alt="Picture of the author"
+                   width={500}
+                   height={500}
+           />
+   )
 }
 ```
+
+### fill
+
+A boolean that causes the image to fill the parent element instead of setting [`width`](#width) and [`height`](#height).
+
+The parent element _must_ assign `position: "relative"`, `position: "fixed"`, or `position: "absolute"` style.
+
+By default, the img element will automatically be assigned the `position: "absolute"` style.
+
+The default image fit behavior will stretch the image to fit the container. You may prefer to set `object-fit: "contain"` for an image which is letterboxed to fit the container and preserve aspect ratio.
+
+Alternatively, `object-fit: "cover"` will cause the image to fill the entire container and be cropped to preserve aspect ratio. For this to look correct, the `overflow: "hidden"` style should be assigned to the parent element.
+
+See also:
+
+- [position](https://developer.mozilla.org/en-US/docs/Web/CSS/position)
+- [object-fit](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit)
+- [object-position](https://developer.mozilla.org/en-US/docs/Web/CSS/object-position)
 
 ### sizes
 
@@ -221,11 +354,11 @@ This prop can be assigned to all images by updating `next.config.js` with the fo
 
 ```js
 module.exports = {
-  experimental: {
-    images: {
-      unoptimized: true,
-    },
-  },
+   experimental: {
+      images: {
+         unoptimized: true,
+      },
+   },
 }
 ```
 
@@ -248,18 +381,18 @@ To protect your application from malicious users, configuration is required in o
 
 ```js
 module.exports = {
-  experimental: {
-    images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'example.com',
-          port: '',
-          pathname: '/account123/**',
-        },
-      ],
-    },
-  },
+   experimental: {
+      images: {
+         remotePatterns: [
+            {
+               protocol: 'https',
+               hostname: 'example.com',
+               port: '',
+               pathname: '/account123/**',
+            },
+         ],
+      },
+   },
 }
 ```
 
@@ -269,16 +402,16 @@ Below is another example of the `remotePatterns` property in the `next.config.js
 
 ```js
 module.exports = {
-  experimental: {
-    images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: '**.example.com',
-        },
-      ],
-    },
-  },
+   experimental: {
+      images: {
+         remotePatterns: [
+            {
+               protocol: 'https',
+               hostname: '**.example.com',
+            },
+         ],
+      },
+   },
 }
 ```
 
@@ -301,9 +434,9 @@ Below is an example of the `domains` property in the `next.config.js` file:
 
 ```js
 module.exports = {
-  images: {
-    domains: ['assets.acme.com'],
-  },
+   images: {
+      domains: ['assets.acme.com'],
+   },
 }
 ```
 
@@ -319,9 +452,9 @@ If no configuration is provided, the default below is used.
 
 ```js
 module.exports = {
-  images: {
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-  },
+   images: {
+      deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+   },
 }
 ```
 
@@ -335,9 +468,9 @@ If no configuration is provided, the default below is used.
 
 ```js
 module.exports = {
-  images: {
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-  },
+   images: {
+      imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+   },
 }
 ```
 
@@ -351,9 +484,9 @@ If no configuration is provided, the default below is used.
 
 ```js
 module.exports = {
-  images: {
-    formats: ['image/webp'],
-  },
+   images: {
+      formats: ['image/webp'],
+   },
 }
 ```
 
@@ -361,9 +494,9 @@ You can enable AVIF support with the following configuration.
 
 ```js
 module.exports = {
-  images: {
-    formats: ['image/avif', 'image/webp'],
-  },
+   images: {
+      formats: ['image/avif', 'image/webp'],
+   },
 }
 ```
 
@@ -395,9 +528,9 @@ You can configure the Time to Live (TTL) in seconds for cached optimized images.
 
 ```js
 module.exports = {
-  images: {
-    minimumCacheTTL: 60,
-  },
+   images: {
+      minimumCacheTTL: 60,
+   },
 }
 ```
 
@@ -417,9 +550,9 @@ You can disable static image imports inside your `next.config.js`:
 
 ```js
 module.exports = {
-  images: {
-    disableStaticImages: true,
-  },
+   images: {
+      disableStaticImages: true,
+   },
 }
 ```
 
@@ -431,10 +564,10 @@ If you need to serve SVG images with the default Image Optimization API, you can
 
 ```js
 module.exports = {
-  images: {
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
+   images: {
+      dangerouslyAllowSVG: true,
+      contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+   },
 }
 ```
 

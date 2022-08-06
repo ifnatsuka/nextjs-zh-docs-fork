@@ -38,7 +38,7 @@ module.exports = {
 
 重写应用于客户端路由，上面的示例中 `<Link href="about">` 将应用重写。
 
-`rewrites` 是一个异步函数，它返回一个数组，其中包含 `source` 和 `destination` 属性的对象：
+`rewrites` 是一个异步函数，它返回一个数组或一个数组的对象（如下），其中包含 `source` 和 `destination` 属性的对象：
 
 - `source`：`String` - 是传入的请求的路径
 - `destination`：`String` 是你想要路由到的路径
@@ -46,7 +46,7 @@ module.exports = {
 - `locale`：`false` 或 `undefined` - 匹配时是否包括 locale
 - `has` 是一个 [has 对象](#header-cookie-and-query-matching) 的数组，具有 `type`、`key` 和 `value`属性
 
-默认情况下，重写在检查文件系统（页面和 `/public` 文件）之后及动态路由之前被应用。从 Next.js `v10.1` 开始，可以通过从 `rewrites` 函数返回一个对象而不是数组来更改此行为：
+当 `rewrites` 函数返回一个数组时，重写会在检查文件系统（页面和 `/public` 文件 夹）后和动态路由前应用。从 Next.js 的`v10.1`开始，当 `rewrites` 函数返回一个具有特定结构的数组对象时，这种行为可以被改变，并得到更精细的控制，从 Next.js 的`v10.1`开始：
 
 ```js
 module.exports = {

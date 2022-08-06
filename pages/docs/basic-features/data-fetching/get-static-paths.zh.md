@@ -61,7 +61,7 @@ export default function Post({ post }) {
 
 ## 按需生成路径
 
-`getStaticProps` 允许您控制在构建期间生成哪些页面，而不是使用 [`fallback`](/docs/api-reference/data-fetching/get-static-paths#fallback-blocking) 按需生成。在构建期间生成更多页面将导致构建速度变慢。
+`getStaticPaths` 允许您控制在构建期间生成哪些页面，而不是使用 [`fallback`](/docs/api-reference/data-fetching/get-static-paths#fallback-blocking) 按需生成。在构建期间生成更多页面将导致构建速度变慢。
 
 你可以通过为 `paths` 返回一个空数组来推迟按需生成所有页面。这在将 Next.js 应用程序部署到多个环境时特别有用。例如，你可以通过按需生成所有页面以供预览（但不是生产构建）来加快构建速度。这对于拥有数十万个静态页面的网站很有帮助。
 

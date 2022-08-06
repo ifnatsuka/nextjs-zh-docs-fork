@@ -17,6 +17,7 @@
 
 | 版本        | 更改               |
 | --------- | ---------------- |
+| `v12.2.4` | `onReady` prop added. |
 | `v11.0.0` | `next/script` 引入 |
 
 </details>
@@ -245,7 +246,7 @@ export default function Document() {
 
 ### 加载后执行代码（`onLoad`）
 
-> **注意：`onLoad` 和 `onError` 不能与 `beforeInteractive` 加载策略一起使用。**
+> **注意：`onLoad` 和 `onError` 不能与 `beforeInteractive` 加载策略一起使用。考虑使用 `onReady`。**
 
 一些第三方脚本要求用户在脚本加载完毕后运行 JavaScript 代码，以便实例化内容或调用一个函数。如果你使用 `afterInteractive` 或 `lazyOnload` 作为加载策略来加载脚本，你可以使用 `onLoad` 属性在加载后执行代码：
 
@@ -270,6 +271,34 @@ export default function Home() {
 }
 ```
 
+### 挂载后执行代码（`onReady`）
+
+一些第三方脚本要求用户在脚本加载完成后和每次组件挂载后（例如在路由导航后）运行 JavaScript 代码。你可以在脚本第一次加载时的 `load` 事件后执行代码，然后在随后的每次组件重新挂载后使用 `onReady` 属性：
+
+```jsx
+import Script from 'next/script'
+export default function Home() {
+  return (
+    <>
+      <Script
+        id="google-maps"
+        src="https://maps.googleapis.com/maps/api/js"
+        onReady={() => {
+          new google.maps.Map(ref.current, {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8,
+          })
+        }}
+      />
+    </>
+  )
+}
+```
+
+### 错误处理（`onError`）
+
+> **注意：`onError` 不能与 `beforeInteractive` 加载策略一起使用。**
+
 有时，当一个脚本加载失败时，捕获它是很有帮助的。这些错误可以通过 `onError` 属性来处理：
 
 ```jsx
@@ -292,7 +321,7 @@ export default function Home() {
 
 ### 额外的属性
 
-有许多 DOM 属性可以分配给 `<script>` 元素，这些属性不被脚本组件使用，如 [`nonce`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) 或 [自定义数据属性](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/data-*)。包括任何额外的属性将自动转发到最终的、优化的 `<script>` 元素，并输出到页面。
+有许多 DOM 属性可以分配给 `<script>` 元素，这些属性不被脚本组件使用，如 [`nonce`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/nonce) 或 [自定义数据属性](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/data-*)。包括任何额外的属性将自动转发到最终的、优化的 `<script>` 元素，并输出到页面。
 
 ```jsx
 import Script from 'next/script'
