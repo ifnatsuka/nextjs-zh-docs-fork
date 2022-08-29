@@ -1,21 +1,17 @@
----
-description: Extend the babel preset added by Next.js with your own configs.
----
-
-# Customizing Babel Config
+# 自定义 Babel 配置
 
 <details>
-  <summary><b>Examples</b></summary>
+  <summary><b>示例</b></summary>
   <ul>
-    <li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-custom-babel-config">Customizing babel configuration</a></li>
+    <li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-custom-babel-config">自定义 babel 配置</a></li>
   </ul>
 </details>
 
-Next.js includes the `next/babel` preset to your app, which includes everything needed to compile React applications and server-side code. But if you want to extend the default Babel configs, it's also possible.
+Next.js 包含应用程序的 `next/babel` 预设，包含编译 React 应用程序和服务器端代码所需的一切。但是如果您想扩展默认的 Babel 配置，也是可以的。
 
-To start, you only need to define a `.babelrc` file (or `babel.config.js`) at the top of your app. If such a file is found, it will be considered as the _source of truth_, and therefore it needs to define what Next.js needs as well, which is the `next/babel` preset.
+您只需要在应用程序根目录创建一个 `.babelrc` 文件（或 `babel.config.js`），并添加 `next/babel` 预设。
 
-Here's an example `.babelrc` file:
+`.babelrc` 示例：
 
 ```json
 {
@@ -23,10 +19,9 @@ Here's an example `.babelrc` file:
   "plugins": []
 }
 ```
+您可以 [查看此文件](https://github.com/vercel/next.js/blob/canary/packages/next/build/babel/preset.ts) 了解 `next/babel` 包含的预设。
 
-You can [take a look at this file](https://github.com/vercel/next.js/blob/canary/packages/next/build/babel/preset.ts) to learn about the presets included by `next/babel`.
-
-To add presets/plugins **without configuring them**, you can do it this way:
+添加 预设/插件 而不对其进行配置，可以采用以下方式：
 
 ```json
 {
@@ -34,8 +29,7 @@ To add presets/plugins **without configuring them**, you can do it this way:
   "plugins": ["@babel/plugin-proposal-do-expressions"]
 }
 ```
-
-To add presets/plugins **with custom configuration**, do it on the `next/babel` preset like so:
+要添加具有自定义配置的 预设/插件，请在 `next/babel` 预设上配置，如下所示：
 
 ```json
 {
@@ -54,8 +48,8 @@ To add presets/plugins **with custom configuration**, do it on the `next/babel` 
 }
 ```
 
-To learn more about the available options for each config, visit their documentation site.
+要了解有关每个配置的可用选项的更多信息，请访问其文档站点。
 
-> Next.js uses the **current** Node.js version for server-side compilations.
+> Next.js 使用当前的 Node.js 版本进行服务器端编译。
 
-> The `modules` option on `"preset-env"` should be kept to `false`, otherwise webpack code splitting is turned off.
+> `"preset-env"` 上的 `modules` 选项应保持为 `false`，否则 webpack 代码拆分将关闭。
