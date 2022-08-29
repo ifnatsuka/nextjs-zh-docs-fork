@@ -1,42 +1,40 @@
----
-description: Learn how to use @next/mdx in your Next.js project.
----
+# Next.js 使用 MDX
 
-# Using MDX with Next.js
+MDX 是 Markdown 的超集，允许您直接在 Markdown 文件中写入 JSX。这是一种添加动态交互性并在内容中嵌入组件的强大方式，可帮助您使页面栩栩如生。
 
-MDX is a superset of markdown that lets you write JSX directly in your markdown files. It is a powerful way to add dynamic interactivity, and embed components within your content, helping you to bring your pages to life.
+Next.js 通过多种不同的方式支持 MDX，本页介绍将 MDX 集成到 Next.js 项目中的一些方法。
 
-Next.js supports MDX through a number of different means, this page will outline some of the ways you can begin integrating MDX into your Next.js project.
+## 为什么使用 MDX?
 
-## Why use MDX?
+Markdown 是一种直观的编写内容的方式，其简洁的语法能够编写既可读又可维护的内容。由于可以在 Markdown 中使用 `HTML` 元素，所以在设置 Markdown 页面的样式时也可以发挥创意。
 
-Authoring in markdown is an intuitive way to write content, its terse syntax, once adopted, can enable you to write content that is both readable and maintainable. Because you can use `HTML` elements in your markdown, you can also get creative when styling your markdown pages.
+但是，由于 Markdown 本质上是静态内容，因此不能基于用户交互创建动态内容。MDX 的亮点在于它能够直接在标记中创建和使用 React 组件，构建具有交互的网站页面成为可能。
 
-However, because markdown is essentially static content, you can't create _dynamic_ content based on user interactivity. Where MDX shines is in its ability to let you create and use your React components directly in the markup. This opens up a wide range of possibilities when composing your sites pages with interactivity in mind.
+## MDX 插件
 
-## MDX Plugins
+MDX 内部使用 Remark 和 Rehype。
 
-Internally MDX uses remark and rehype. Remark is a markdown processor powered by a plugins ecosystem. This plugin ecosystem lets you parse code, transform `HTML` elements, change syntax, extract frontmatter, and more.
+Remark 是一个由插件生态系统支持的 Markdown 处理器。这个插件生态系统允许您解析代码、转换 `HTML` 元素、更改语法、提取 frontmatter 等等。
 
-Rehype is an `HTML` processor, also powered by a plugin ecosystem. Similar to remark, these plugins let you manipulate, sanitize, compile and configure all types of data, elements and content.
+Rehype 是一个 `HTML` 处理器，也由插件生态系统提供支持。类似于 remark，这些插件允许您操作、清理、编译和配置所有类型的数据、元素和内容。
 
-To use a plugin from either remark or rehype, you will need to add it to the MDX packages config.
+要使用 remark 或 rehype 中的插件，您需要将其添加到 MDX packages 配置中。
 
 ## `@next/mdx`
 
-The `@next/mdx` package is configured in the `next.config.js` file at your projects root. **It sources data from local files**, allowing you to create pages with a `.mdx` extension, directly in your `/pages` directory.
+`@next/mdx` 包在项目根目录的 `next.config.js` 文件中配置。**它从本地文件中获取数据**，允许您直接在 `/pages` 目录中创建扩展名为 `.mdx` 的页面。
 
-### Setup `@next/mdx` in Next.js
+### 在 Next.js 中设置 `@next/mdx`
 
-The following steps outline how to setup `@next/mdx` in your Next.js project:
+以下步骤概述了如何在 Next.js 项目中设置 `@next/mdx`：
 
-1. Install the required packages:
+1. 安装所需的包：
 
    ```bash
      npm install @next/mdx @mdx-js/loader
    ```
 
-2. Require the package and configure to support top level `.mdx` pages. The following adds the `options` object key allowing you to pass in any plugins:
+2. 支持顶级 `.mdx` 页面。下面添加了 `options` 对象，允许您传入任何插件：
 
    ```js
    // next.config.js
@@ -46,17 +44,17 @@ The following steps outline how to setup `@next/mdx` in your Next.js project:
      options: {
        remarkPlugins: [],
        rehypePlugins: [],
-       // If you use `MDXProvider`, uncomment the following line.
+       // 如果要使用 `MDXProvider`, 就取消下一行的注释.
        // providerImportSource: "@mdx-js/react",
      },
    })
    module.exports = withMDX({
-     // Append the default value with md extensions
+     // 用 md 扩展名附加默认值
      pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
    })
    ```
 
-3. Create a new MDX page within the `/pages` directory:
+3. 在 `/pages` 目录创建一个新的 MDX 页面：
 
    ```bash
      - /pages
@@ -64,16 +62,16 @@ The following steps outline how to setup `@next/mdx` in your Next.js project:
      - package.json
    ```
 
-## Using Components, Layouts and Custom Elements
+## 使用 Components, Layouts 和 Custom Elements
 
-You can now import a React component directly inside your MDX page:
+现在，您可以直接在 MDX 页面中导入 React 组件：
 
 ```md
 import { MyComponent } from 'my-components'
 
 # My MDX page
 
-This is a list in markdown:
+This is a list in Markdown:
 
 - One
 - Two
@@ -86,9 +84,9 @@ Checkout my React component:
 
 ### Frontmatter
 
-Frontmatter is a YAML like key/value pairing that can be used to store data about a page. `@next/mdx` does **not** support frontmatter by default, though there are many solutions for adding frontmatter to your MDX content, such as [gray-matter](https://github.com/jonschlinkert/gray-matter).
+Frontmatter 是一种类似于YAML的 键/值 对，可用于存储关于页面的数据。默认情况下，`@next/mdx` 不支持 frontmatter，尽管有许多将 frontmatter 添加到 MDX 内容的解决方案，例如 [gray-matter](https://github.com/jonschlinkert/gray-matter)
 
-To access page metadata with `@next/mdx`, you can export a meta object from within the `.mdx` file:
+要使用 `@next/mdx` 访问页面元数据，您可以从 `.mdx` 文件中导出元对象：
 
 ```md
 export const meta = {
@@ -100,7 +98,8 @@ author: 'Rich Haines'
 
 ### Layouts
 
-To add a layout to your MDX page, create a new component and import it into the MDX page. Then you can wrap the MDX page with your layout component:
+
+要将布局添加到 MDX 页面，请创建新组件并将其导入 MDX 页面。然后，您可以使用布局组件包装 MDX 页面：
 
 ```md
 import { MyComponent, MyLayoutComponent } from 'my-components'
@@ -111,7 +110,7 @@ author: 'Rich Haines'
 
 # My MDX Page with a Layout
 
-This is a list in markdown:
+This is a list in Markdown:
 
 - One
 - Two
@@ -126,28 +125,28 @@ export default ({ children }) => <MyLayoutComponent meta={meta}>{children}</MyLa
 
 ### Custom Elements
 
-One of the pleasant aspects of using markdown, is that it maps to native `HTML` elements, making writing fast, and intuitive:
+使用 Markdown 的一个令人愉快的方面是，它映射到本地的 `HTML` 元素，使书写快速直观：
 
 ```md
 # H1 heading
 
 ## H2 heading
 
-This is a list in markdown:
+This is a list in Markdown:
 
 - One
 - Two
 - Three
 ```
 
-The above generates the following `HTML`:
+上面生成了以下 `HTML`：
 
 ```html
 <h1>H1 heading</h1>
 
 <h2>H2 heading</h2>
 
-<p>This is a list in markdown:</p>
+<p>This is a list in Markdown:</p>
 
 <ul>
   <li>One</li>
@@ -155,10 +154,9 @@ The above generates the following `HTML`:
   <li>Three</li>
 </ul>
 ```
+当您想为自己的元素设置样式以给您的网站或应用程序带来自定义感觉时，您可以传入短代码。这些是您自己的自定义组件，映射到 `HTML` 元素。为此，使用 `MDXProvider` 并将组件对象作为 prop 传递。组件对象中的每个对象键都映射到 `HTML` 元素名称。
 
-When you want to style your own elements to give a custom feel to your website or application, you can pass in shortcodes. These are your own custom components that map to `HTML` elements. To do this you use the `MDXProvider` and pass a components object as a prop. Each object key in the components object maps to a `HTML` element name.
-
-To enable you need to specify `providerImportSource: "@mdx-js/react"` in `next.config.js`.
+要启用此功能，需要在 `next.config.js` 中指定 `providerImportSource: "@mdx-js/react"`。
 
 ```js
 // next.config.js
@@ -171,7 +169,7 @@ const withMDX = require('@next/mdx')({
 })
 ```
 
-Then setup the provider in your page
+然后在页面中设置 provider
 
 ```jsx
 // pages/index.js
@@ -201,10 +199,9 @@ export default function Post(props) {
   )
 }
 ```
+如果您在整个站点中使用它，您可能希望将 provider 添加到 `_app.js`，以便所有 MDX 页面都选择自定义元素配置。
 
-If you use it across the site you may want to add the provider to `_app.js` so all MDX pages pick up the custom element config.
-
-## Helpful Links
+## 有用的链接
 
 - [MDX](https://mdxjs.com)
 - [`@next/mdx`](https://www.npmjs.com/package/@next/mdx)
