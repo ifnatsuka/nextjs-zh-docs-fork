@@ -1,29 +1,25 @@
----
-description: Configure module path aliases that allow you to remap certain import paths.
----
-
-# Absolute Imports and Module path aliases
+# 绝对导入和模块路径别名
 
 <details>
-  <summary><b>Examples</b></summary>
+  <summary><b>示例</b></summary>
   <ul>
-    <li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-absolute-imports">Absolute Imports</a></li>
+    <li><a href="https://github.com/vercel/next.js/tree/canary/examples/with-absolute-imports">绝对导入</a></li>
   </ul>
 </details>
 
-Next.js automatically supports the `tsconfig.json` and `jsconfig.json` `"paths"` and `"baseUrl"` options since [Next.js 9.4](https://nextjs.org/blog/next-9-4).
+从 [Next.js 9.4](https://nextjs.org/blog/next-9-4) 起自动支持 `tsconfig.json` 和 `jsconfig.json`、`"paths"` 和 `"baseUrl"` 选项。
 
-> Note: `jsconfig.json` can be used when you don't use TypeScript
+> 注意：`jsconfig.json` 可以在不使用 TypeScript 时使用。
 
-> Note: you need to restart dev server to reflect modifications done in `tsconfig.json` / `jsconfig.json`
+> 注意： 如果修改了 `tsconfig.json` / `jsconfig.json`, 你需要重启开发服务器，才可以生效。
 
-These options allow you to configure module aliases, for example a common pattern is aliasing certain directories to use absolute paths.
+这些选项允许您配置模块别名，例如，一种常见的模式是将某些目录别名为绝对路径。
 
-One useful feature of these options is that they integrate automatically into certain editors, for example vscode.
+这些选项的一个有用特性是它们自动集成到某些编辑器中，例如 vscode。
 
-The `baseUrl` configuration option allows you to import directly from the root of the project.
+`baseUrl` 配置选项允许您直接从项目根目录导入。
 
-An example of this configuration:
+此配置的示例：
 
 ```json
 // tsconfig.json or jsconfig.json
@@ -54,12 +50,9 @@ export default function HomePage() {
   )
 }
 ```
+使用 `"paths"` 可以配置模块别名。例如 `@/components/*` 到 `components/*`。
 
-While `baseUrl` is useful you might want to add other aliases that don't match 1 on 1. For this TypeScript has the `"paths"` option.
-
-Using `"paths"` allows you to configure module aliases. For example `@/components/*` to `components/*`.
-
-An example of this configuration:
+此配置的示例：
 
 ```json
 // tsconfig.json or jsconfig.json
