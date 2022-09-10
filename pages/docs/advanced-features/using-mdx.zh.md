@@ -1,4 +1,4 @@
-# Next.js 使用 MDX
+# 使用 MDX
 
 MDX 是 Markdown 的超集，允许您直接在 Markdown 文件中写入 JSX。这是一种添加动态交互性并在内容中嵌入组件的强大方式，可帮助您使页面栩栩如生。
 
@@ -62,11 +62,11 @@ Rehype 是一个 `HTML` 处理器，也由插件生态系统提供支持。类�
      - package.json
    ```
 
-## 使用 Components, Layouts 和 Custom Elements
+## 使用 Components、Layouts 和 Custom Elements
 
 现在，您可以直接在 MDX 页面中导入 React 组件：
 
-```md
+```mdx
 import { MyComponent } from 'my-components'
 
 # My MDX page
@@ -88,7 +88,7 @@ Frontmatter 是一种类似于YAML的 键/值 对，可用于存储关于页面�
 
 要使用 `@next/mdx` 访问页面元数据，您可以从 `.mdx` 文件中导出元对象：
 
-```md
+```mdx
 export const meta = {
 author: 'Rich Haines'
 }
@@ -96,12 +96,12 @@ author: 'Rich Haines'
 # My MDX page
 ```
 
-### Layouts
+### 布局
 
 
 要将布局添加到 MDX 页面，请创建新组件并将其导入 MDX 页面。然后，您可以使用布局组件包装 MDX 页面：
 
-```md
+```mdx
 import { MyComponent, MyLayoutComponent } from 'my-components'
 
 export const meta = {
@@ -123,11 +123,11 @@ Checkout my React component:
 export default ({ children }) => <MyLayoutComponent meta={meta}>{children}</MyLayoutComponent>
 ```
 
-### Custom Elements
+### 自定义元素
 
 使用 Markdown 的一个令人愉快的方面是，它映射到本地的 `HTML` 元素，使书写快速直观：
 
-```md
+```mdx
 # H1 heading
 
 ## H2 heading
@@ -154,9 +154,10 @@ This is a list in Markdown:
   <li>Three</li>
 </ul>
 ```
+
 当您想为自己的元素设置样式以给您的网站或应用程序带来自定义感觉时，您可以传入短代码。这些是您自己的自定义组件，映射到 `HTML` 元素。为此，使用 `MDXProvider` 并将组件对象作为 prop 传递。组件对象中的每个对象键都映射到 `HTML` 元素名称。
 
-要启用此功能，需要在 `next.config.js` 中指定 `providerImportSource: "@mdx-js/react"`。
+要启用此功能，需要在 `next.config.js` 中指定 `providerImportSource: "@mdx-js/react"`：
 
 ```js
 // next.config.js
@@ -169,7 +170,7 @@ const withMDX = require('@next/mdx')({
 })
 ```
 
-然后在页面中设置 provider
+然后在页面中设置 MDXProvider：
 
 ```jsx
 // pages/index.js

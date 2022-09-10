@@ -70,4 +70,4 @@ module.exports = {
 请注意，当 `nextRuntime` 是 `"edge"` 或 `"nodejs"` 时，`isServer` 是 `true`，nextRuntime "`edge`" 当前仅用于 edge runtime 的中间件和服务器组件。
 
 ## 相关
-- [next.config.js 简介：了解 Next.js 使用的配置文件的更多信息](/docs/api-reference/next-config-js/introduction)
+- [**next.config.js 简介** / 了解 Next.js 使用的配置文件的更多信息](/docs/api-reference/next-config-js/introduction)

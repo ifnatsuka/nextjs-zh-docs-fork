@@ -43,25 +43,25 @@ module.exports = {
     styledComponents: boolean | {
       // 在开发中默认启用，在生产中禁用以减小文件大小，
       // 设置此选项将覆盖所有环境的默认值。
-      displayName?: boolean，
+      displayName?: boolean,
       // 默认情况下启用。
-      ssr?: boolean，
+      ssr?: boolean,
       // 默认情况下启用。
-      fileName?: boolean，
+      fileName?: boolean,
       // 默认情况下为空。
-      topLevelImportPaths?: string[]，
+      topLevelImportPaths?: string[],
       // 默认为 ["index"].
-      meaninglessFileNames?: string[]，
+      meaninglessFileNames?: string[],
       // 默认情况下启用。
-      cssProp?: boolean，
+      cssProp?: boolean,
       // 默认情况下为空。
-      namespace?: string，
+      namespace?: string,
       // 尚不支持。
-      minify?: boolean，
+      minify?: boolean,
       // 尚不支持。
-      transpileTemplateLiterals?: boolean，
+      transpileTemplateLiterals?: boolean,
       // 尚不支持。
-      pure?: boolean，
+      pure?: boolean,
     }，
   }，
 }
@@ -91,7 +91,7 @@ const createJestConfig = nextJest({ dir: './' })
 
 // 要传递给 Jest 的任何自定义配置
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js']，
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 }
 
 // createJestConfig 以这种方式导出，以确保 next/jest 可以加载 Next.js 配置，该配置是异步的
@@ -108,19 +108,19 @@ module.exports = {
   compiler: {
     relay: {
       // 这应该与 relay.config.js 匹配
-      src: './'，
-      artifactDirectory: './__generated__'，
-      language: 'typescript'，
-    }，
-  }，
+      src: './',
+      artifactDirectory: './__generated__',
+      language: 'typescript',
+    },
+  },
 }
 ```
 
 注意：在 Next.js 中， `pages` 目录中的所有 JavaScript 文件都被视为路由。 因此对于 `relay-compiler`，你需要在 `pages` 之外指定  `artifactDirectory` 配置， 否则 `relay-compiler` 将在 `__generated__` 目录中的源文件旁边生成文件，并且该文件将被视为路由，则将中断生产构建。
 
-### Remove React Properties
+### 移除 JSX 属性
 
-允许删除 JSX 属性. 这通常用于测试， 类似于 `babel-plugin-react-remove-properties`。
+允许移除 JSX 属性. 这通常用于测试， 类似于 `babel-plugin-react-remove-properties`。
 
 删除与默认正则表达式 `^data-test` 匹配的属性：
 
@@ -141,14 +141,14 @@ module.exports = {
   compiler: {
     // 这里定义的正则表达式是在 Rust 中处理的， 因此语法与 JavaScript 的 `RegExp` 不同. 
     // 请查看 https://docs.rs/regex.
-    reactRemoveProperties: { properties: ['^data-custom$'] }，
-  }，
+    reactRemoveProperties: { properties: ['^data-custom$'] },
+  },
 }
 ```
 
-### Remove Console
+### 移除 Console 调用
 
-删除所有在程序代码中调用的 `console.*`（不包括 `node_modules`）。
+移除所有在程序代码中调用的 `console.*`（不包括 `node_modules`）。
 
 类似于 `babel-plugin-transform-remove-console`。
 
@@ -170,17 +170,17 @@ module.exports = {
 module.exports = {
   compiler: {
     removeConsole: {
-      exclude: ['error']，
-    }，
-  }，
+      exclude: ['error'],
+    },
+  },
 }
 ```
 
-### Legacy Decorators
+### 传统装饰器
 
 Next.js 将自动检测 `jsconfig.json` / `tsconfig.json` 中的 `experimentalDecorators`。
 
-Legacy decorators 通常与较旧版本的库一起使用 ( 比如: `mobx`)。
+Legacy decorators 通常与较旧版本的库一起使用 (比如: `mobx`)。
 
 仅当与现有应用程序兼容时才支持此标志。我们不建议在新的应用程序中使用旧的装饰器。
 
@@ -194,13 +194,13 @@ Legacy decorators 通常与较旧版本的库一起使用 ( 比如: `mobx`)。
 }
 ```
 
-### importSource
+### 导入源
 
 Next.js 将自动检测 `jsconfig.json` / `tsconfig.json`  中的 `jsxImportSource`，并应用它。
 
 这通常与 Theme UI 等库一起使用。
 
-首先，更新到 Next.js 的最新版本： `npm install next@latest`。 然后，更新`jsconfig.json` or `tsconfig.json` 文件：
+首先，更新到 Next.js 的最新版本： `npm install next@latest`。 然后，更新 `jsconfig.json` 或者 `tsconfig.json` 文件：
 
 ```js
 {
@@ -223,25 +223,25 @@ module.exports = {
   compiler: {
     emotion: boolean | {
       // 默认值为 true。当构建类型为 production 时，它将被禁用。
-      sourceMap?: boolean，
+      sourceMap?: boolean,
       // 默认值为 'dev-only'.
-      autoLabel?: 'never' | 'dev-only' | 'always'，
+      autoLabel?: 'never' | 'dev-only' | 'always',
       // 默认值为 '[local]'.
       // 允许的值: `[local]` `[filename]` and `[dirname]`
       // 此选项仅在 autoLabel 设置为 'dev-only' 或 'always' 时有效。
       // 它允许您定义生成的标签的格式。
       // 格式通过字符串定义，其中变量部分用方括号 [] 括起来。
       // 例如，labelFormat: "my-classname--[local]"，其中[local] 将替换为结果分配给的变量的名称。
-      labelFormat?: string，
-    }，
-  }，
+      labelFormat?: string,
+    },
+  },
 }
 ```
 目前只支持 `@emotion/babel-plugin` 中的 `importMap`。
 
 ## 实验功能
 
-### Minification
+### 最小化
 
 您可以选择使用 Next.js 编译器进行缩小。这比 Terser 快7倍。
 
@@ -255,9 +255,9 @@ module.exports = {
 
 如果你对 `swcMinify` 有反馈，请在 [这里](https://github.com/vercel/Next.js/discussions/30237) 分享。
 
-### Minifier debug options
+### 缩小器调试选项
 
-虽然 minifier 是实验性的，但我们将以下选项用于调试。一旦 minifier 稳定下来，它们将不可用。
+虽然缩小器（minifier）是实验性的，但我们将以下选项用于调试。一旦缩小器发布稳定版后，它们将不可用。
 
 ```js
 // next.config.js
@@ -270,25 +270,25 @@ module.exports = {
         side_effects: false
       }
     }
-  }
+  },
   swcMinify: true
 }
 ```
 如果您的应用程序使用上述选项，则表示 `side_effects` 是有问题的选项， 有关详细，请查看 [SWC文档](https://swc.rs/docs/configuration/minification#jscminifycompress)。
 
 
-### Modularize Imports
+### 模块化导入
  
 允许模块化导入。类似于 [babel-plugin-transform-imports](https://www.npmjs.com/package/babel-plugin-transform-imports) 。
 
-转换成员样式导入：
+解构导入：
 
 ```js
 import { Row,Grid as MyGrid } from 'react-bootstrap'
 import { merge } from 'lodash'
 ```
 
-...转换为默认样式导入：
+单一导入：
 
 ```js
 import Row from 'react-bootstrap/lib/Row'
@@ -387,13 +387,13 @@ module.exports = {
   experimental: {
     swcPlugins: [
       [
-        'plugin'，
+        'plugin',
         {
-          ...pluginOptions，
-        }，
-      ]，
-    ]，
-  }，
+          ...pluginOptions,
+        },
+      ],
+    ],
+  },
 }
 ```
 
